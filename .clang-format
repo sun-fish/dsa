@@ -5,3 +5,5 @@ IndentWidth:     4
 TabWidth:        4
 UseCRLF:         false
 UseTab:          Never
+# 代码最大列数
+ColumnLimit:     120
