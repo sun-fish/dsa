@@ -15,23 +15,23 @@ template <typename T>
 class BinaryNode {
    public:
     BinaryNode()
-        : parent_(NULL),
-          left_child_(NULL),
-          right_child_(NULL),
+        : parent_(nullptr),
+          left_child_(nullptr),
+          right_child_(nullptr),
           height_(0),
           null_path_length_(1),
           color_(RB_RED) {}
 
-    BinaryNode(T e, BinaryNode<T>* parent = NULL,
-               BinaryNode<T>* left_child = NULL,
-               BinaryNode<T>* right_child = NULL, int height = 0, int npl = 1,
+    BinaryNode(T e, BinaryNode<T>* parent = nullptr,
+               BinaryNode<T>* left_child = nullptr,
+               BinaryNode<T>* right_child = nullptr, int height = 0, int npl = 1,
                RBColor color = RB_RED)
         : data_(e),
           parent_(parent),
           left_child_(left_child),
-          right_child(right_child),
+          right_child_(right_child),
           height_(height),
-          null_path_length_(npl),
+          nullptr_path_length_(npl),
           color_(color) {}
 
     bool operator<(BinaryNode<T>* const &bn) { return data_ < bn.data() }
@@ -51,6 +51,7 @@ class BinaryNode {
         right_child_ = right_child};
 
     size_t height(){return height_};
+    void set_height(size_t height){height_ = height};
 
     size_t null_path_length(){return null_path_length_};
     void set_null_path_length(size_t null_path_length){null_path_length_ = null_path_length};
@@ -58,13 +59,11 @@ class BinaryNode {
     RBColor color(){return color_};
     void set_color(RBColor color){color_ = color};
 
-    //是否需要update_height之类的函数？？
-
    private:
     T data_;
-    BinaryNode *parent_, *left_child_, *right_child_;
+    BinaryNode<T> *parent_, *left_child_, *right_child_;
     size_t height_;
-    size_t null_path_length_;  // Null Path Length, left heap
+    size_t null_path_length_;  // nullptr Path Length, left heap
     RBColor color_;            // used for red black tree
 };
 

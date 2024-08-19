@@ -4,6 +4,7 @@ project(BinaryTree)
 
 set (SRC
     binary_node.h
+    binary_tree.h
     compile_test.cpp
     main.cpp
 )
