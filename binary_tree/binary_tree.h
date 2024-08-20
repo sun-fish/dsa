@@ -25,17 +25,19 @@ class BinaryTree {
     BinaryTree<T>* datachChildTree(BinaryNode<T>*) { return nullptr; }
 
     BinaryNode<T>* root(){return root_};
-    void set_root(BinaryNode<T>* root){root_ = root};
+    void set_root(BinaryNode<T>* root) { root_ = root;}
 
     BinaryNode<T>* insertLeftNode(T e, BinaryNode<T>* parent) {
-        BinaryNode<T>* left_child = new BinaryNode<T>(e) parent->set_left_child(left_child);
+        BinaryNode<T>* left_child = new BinaryNode<T>(e);
+        parent->set_left_child(left_child);
         updateHeightAbove(left_child);
         ++size_;
         return parent->left_child();
     }
 
-    BinaryNode<T>* insertRightNode(T, BinaryNode<T>* parent) {
-        BinaryNode<T>* right_child = new BinaryNode<T>(e) parent->set_right_child(right_child);
+    BinaryNode<T>* insertRightNode(T e, BinaryNode<T>* parent) {
+        BinaryNode<T>* right_child = new BinaryNode<T>(e);
+        parent->set_right_child(right_child);
         updateHeightAbove(right_child);
         ++size_;
         return parent->right_child();

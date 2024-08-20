@@ -30,29 +30,29 @@ class BinaryNode {
           null_path_length_(npl),
           color_(color) {}
 
-    bool operator<(BinaryNode<T>* const& bn) { return data_ < bn.data() }
-    bool operator==(BinaryNode<T>* const& bn){return data_ == bn.data()}
+    bool operator<(BinaryNode<T>& bn) { return data_ < bn.data(); }
+    bool operator==(BinaryNode<T>& bn) { return data_ == bn.data(); }
 
-    T data(){return data_};
-    void set_data_(T data){data_ = data};
+    T data() { return data_; }
+    void set_data(T data) { data_ = data; }
 
-    BinaryNode<T>* parent(){return parent_};
-    void set_parent(BinaryNode<T>* parent){parent_ = parent};
+    BinaryNode<T>* parent() { return parent_; }
+    void set_parent(BinaryNode<T>* parent) { parent_ = parent; }
 
-    BinaryNode<T>* left_child(){return left_child_};
-    void set_left_child(BinaryNode<T>* left_child){left_child_ = left_child};
+    BinaryNode<T>* left_child() { return left_child_; }
+    void set_left_child(BinaryNode<T>* left_child) { left_child_ = left_child; }
 
-    BinaryNode<T>* right_child(){return right_child_};
-    void set_right_child(BinaryNode<T>* right_child){right_child_ = right_child};
+    BinaryNode<T>* right_child() { return right_child_; }
+    void set_right_child(BinaryNode<T>* right_child) { right_child_ = right_child; }
 
-    size_t height(){return height_};
-    void set_height(size_t height){height_ = height};
+    size_t height() { return height_; };
+    void set_height(size_t height) { height_ = height; }
 
-    size_t null_path_length(){return null_path_length_};
-    void set_null_path_length(size_t null_path_length){null_path_length_ = null_path_length};
+    size_t null_path_length() { return null_path_length_; }
+    void set_null_path_length(size_t null_path_length) { null_path_length_ = null_path_length; }
 
-    RBColor color(){return color_};
-    void set_color(RBColor color){color_ = color};
+    RBColor color() { return color_; }
+    void set_color(RBColor color) { color_ = color; }
 
    private:
     T data_;
