@@ -2,9 +2,9 @@
 #define BINARY_NODE_H
 
 #if defined(DSA_REDBLACK)                   // Red-Black Tree
-#define stature(p) ((p) ? (p)->height : 0)  // initial height is 0, else recursive
+#define stature(p) ((p) ? (p)->height() : 0)  // initial height is 0, else recursive
 #else
-#define stature(p) ((int)((p) ? (p)->height : -1))  // initial height is -1, else recursive
+#define stature(p) ((int)((p) ? (p)->height() : -1))  // initial height is -1, else recursive
 #endif
 
 typedef enum { RB_RED, RB_BLACK } RBColor;
@@ -31,7 +31,38 @@ class BinaryNode {
           color_(color) {}
 
     bool operator<(BinaryNode<T>& bn) { return data_ < bn.data(); }
+    bool operator>(BinaryNode<T>& bn) { return data_ > bn.data(); }
     bool operator==(BinaryNode<T>& bn) { return data_ == bn.data(); }
+    bool operator!=(BinaryNode<T>& bn) { return data_ != bn.data(); }
+
+    size_t size() {
+        size_t result = 1;
+        if (left_child()) {
+            result += left_child()->size();
+        }
+        if (right_child()) {
+            result += right_child()->size();
+        }
+        return result;
+    }
+
+    // binary search tree need it
+    BinaryNode<T>* successive() {
+        BinaryNode<T>* s = this;
+        if (right_child()) {
+            s = right_child();
+            while (s->left_child() != nullptr) {
+                s = s->left_child();
+            }
+        } else {
+            bool is_right_child = s->parent() != nullptr && s->parent()->right_child() == s;
+            while (is_right_child) {
+                s = s->parent();
+            }
+            s = s->parent();
+        }
+        return s;
+    }
 
     T data() { return data_; }
     void set_data(T data) { data_ = data; }
