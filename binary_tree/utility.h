@@ -207,13 +207,11 @@ class BinaryTreeUtility {
             } else {
                 if (!help_stack.empty()) {
                     cur_node = help_stack.top();
-                    // parent child relationship between last_node and  help_stack.top()
                     if (cur_node->right_child() == nullptr || cur_node->right_child() == last_node) {
                         last_node = cur_node;
                         cur_node = nullptr;
                         std::cout << help_stack.top()->data() << "    ";
                         help_stack.pop();
-                    // sibing relationship between last_node and  help_stack.top(), no left child and no right child
                     } else {
                         cur_node = cur_node->right_child();
                     }
