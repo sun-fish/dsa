@@ -31,12 +31,15 @@ class BinaryTree {
     size_t deleteChildTree(BinaryNode<T>* node) {
         if (node == nullptr) return size_;
 
-        auto parent = node->parent();
-        if (parent->left_child() == node)
-            parent->set_left_child(nullptr);
-        else
-            parent->set_right_child(nullptr);
-        updateHeightAbove(parent);
+        if (node != root_)
+        {
+            auto parent = node->parent();
+            if (parent->left_child() == node)
+                parent->set_left_child(nullptr);
+            else
+                parent->set_right_child(nullptr);
+            updateHeightAbove(parent);
+        }
 
         size_t sub_tree_size = deleteChildTreeNodes(node);
         size_ -= sub_tree_size;
