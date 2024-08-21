@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <queue>
+#include <stack>
 
 template <typename T>
 class BinaryNodeUtility {
@@ -86,33 +87,143 @@ class BinaryTreeUtility {
 
     static void TravellingPreOrderIteratively1(T* const root) {
         if (root == nullptr) return;
+        std::stack<T*> help_stack;
+        if (root != nullptr) help_stack.push(root);
+        while (!help_stack.empty()) {
+            auto node = help_stack.top();
+            help_stack.pop();
+            std::cout << node->data() << "    ";
+            if (BinaryNodeUtility<T>::hasRightChild(*node)) help_stack.push(node->right_child());
+            if (BinaryNodeUtility<T>::hasLeftChild(*node)) help_stack.push(node->left_child());
+        }
+
         std::cout << "Previous order iteratively1 end!" << std::endl;
         return;
     }
 
     static void TravellingPreOrderIteratively2(T* const root) {
         if (root == nullptr) return;
+        std::stack<T*> help_stack;
+        auto node = root;
+        while (true) {
+            while (node != nullptr) {
+                std::cout << node->data() << "    ";
+                if (node->right_child() != nullptr) {
+                    help_stack.push(node->right_child());
+                }
+                node = node->left_child();
+            }
+
+            if (help_stack.empty()) {
+                break;
+            }
+            node = help_stack.top();
+            help_stack.pop();
+        }
+
         std::cout << "Previous order iteratively2 end!" << std::endl;
         return;
     }
 
     static void TravellingMidOrderIteratively1(T* const root) {
         if (root == nullptr) return;
+        std::stack<T*> help_stack;
+        auto node = root;
+        while (true) {
+            while (node != nullptr) {
+                help_stack.push(node);
+                node = node->left_child();
+            }
+            if (help_stack.empty()) {
+                break;
+            }
+            node = help_stack.top();
+            help_stack.pop();
+            std::cout << node->data() << "    ";
+            node = node->right_child();
+        }
         std::cout << "Middle order iteratively1 end!" << std::endl;
         return;
     }
 
     static void TravellingMidOrderIteratively2(T* const root) {
         if (root == nullptr) return;
+        std::stack<T*> help_stack;
+        auto node = root;
+        while (true) {
+            if (node != nullptr) {
+                help_stack.push(node);
+                node = node->left_child();
+            } else {
+                if (!help_stack.empty()) {
+                    std::cout << help_stack.top()->data() << "    ";
+                    node = help_stack.top()->right_child();
+                    help_stack.pop();
+                } else {
+                    break;
+                }
+            }
+        }
+
+        std::cout << "Middle order iteratively2 end!" << std::endl;
+        return;
+    }
+
+    static void TravellingMidOrderIteratively3(T* const root) {
+        if (root == nullptr) return;
+        auto node = root;
+        while (true) {
+            if (node->left_child() != nullptr) {
+                node = node->left_child();
+            } else {
+                std::cout << node->data() << "    ";
+                while (node->right_child() == nullptr) {
+                    // backtrace to parent, whose left child is current node's ancestor
+                    node = node->successive();
+                    if (node != nullptr) {
+                        std::cout << node->data() << "    ";
+                    } else {
+                        std::cout << "Middle order iteratively3 end!" << std::endl;
+                        return;
+                    }
+                }
+                node = node->right_child();
+            }
+        }
+
         std::cout << "Middle order iteratively3 end!" << std::endl;
         return;
     }
 
-    static void TravellingMidPostIteratively(T* const root) {
+    static void TravellingPostIteratively(T* const root) {
         if (root == nullptr) return;
+        std::stack<T*> help_stack;
+        T* cur_node = root;
+        T* last_node = nullptr;
+        while (true) {
+            if (cur_node != nullptr) {
+                help_stack.push(cur_node);
+                last_node = cur_node;
+                cur_node = cur_node->left_child();
+            } else {
+                if (!help_stack.empty()) {
+                    // parent child relationship between last_node and  help_stack.top()
+                    if (last_node->right_child() != nullptr) {
+                        cur_node = last_node->right_child();
+                    // sibing relationship between last_node and  help_stack.top(), no left child and no right child
+                    } else {
+                        std::cout << help_stack.top()->data() << "    ";
+                        last_node = help_stack.top();
+                        help_stack.pop();
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
         std::cout << "Post order iteratively end!" << std::endl;
         return;
-    }
+    };
 };
 
 #endif  // !BINARY_TREE_UTILITY

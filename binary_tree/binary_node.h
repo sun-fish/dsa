@@ -55,9 +55,10 @@ class BinaryNode {
                 s = s->left_child();
             }
         } else {
-            bool is_right_child = s->parent() != nullptr && s->parent()->right_child() == s;
+            bool is_right_child = (s->parent() != nullptr) && (s->parent()->right_child() == s);
             while (is_right_child) {
                 s = s->parent();
+                is_right_child = (s->parent() != nullptr) && (s->parent()->right_child() == s);
             }
             s = s->parent();
         }

@@ -29,10 +29,20 @@ int main(int argc, char** argv)
     BinaryTreeUtility<BinaryNode<int>>::TravellingLevel(node1);
     BinaryTreeUtility<BinaryNode<int>>::TravellingPreOrderRecursively(node1);
     std::cout << "Previous order recursively end!" << std::endl;
+    BinaryTreeUtility<BinaryNode<int>>::TravellingPreOrderIteratively1(node1);
+    BinaryTreeUtility<BinaryNode<int>>::TravellingPreOrderIteratively2(node1);
+    std::cout << std::endl;
+
     BinaryTreeUtility<BinaryNode<int>>::TravellingMidOrderRecursively(node1);
     std::cout << "Middle order recursively end!" << std::endl;
+    BinaryTreeUtility<BinaryNode<int>>::TravellingMidOrderIteratively1(node1);
+    BinaryTreeUtility<BinaryNode<int>>::TravellingMidOrderIteratively2(node1);
+    BinaryTreeUtility<BinaryNode<int>>::TravellingMidOrderIteratively3(node1);
+    std::cout << std::endl;
+
     BinaryTreeUtility<BinaryNode<int>>::TravellingPostOrderRecursively(node1);
     std::cout << "Post order recursively end!" << std::endl;
+    BinaryTreeUtility<BinaryNode<int>>::TravellingPostIteratively(node1);
 
     std::cout << "Press Enter to continue...";
     std::cin.get();
