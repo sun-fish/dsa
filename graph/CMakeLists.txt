@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.15)
 project(Graph)
 
 set (SRC
-    graphic.h
+    graph.h
+    graph_matrix.h
     utility.h
     compile_test.cpp
     main.cpp
