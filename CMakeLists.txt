@@ -16,5 +16,6 @@ endif()
 add_subdirectory(array)
 add_subdirectory(list)
 add_subdirectory(binary_tree)
+add_subdirectory(graph)
 
 set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type")
