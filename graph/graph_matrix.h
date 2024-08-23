@@ -79,7 +79,12 @@ class GraphMatrix : public Graph<Tvertex, Tedge> {
             return vertex_number_;
         }
 
-        if (index2 > vertex_number_) {
+        if (index2 == 0) {
+            return vertex_number_;
+        }
+
+        --index2;
+        if (index2 >= vertex_number_) {
             index2 = vertex_number_ - 1;
         }
 
