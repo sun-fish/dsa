@@ -34,38 +34,42 @@ class BinarySearchTree : public BinaryTree<T> {
             return node;
         }
         node = new BinaryNode<T>(e, hot_);
-        if (e < hot_->data()) {
-            e->set_left_child(node);
+        if (hot_ != nullptr) {
+            if (e < hot_->data()) {
+                hot_->set_left_child(node);
+            } else {
+                hot_->set_right_child(node);
+            }
         } else {
-            e->set_right_child(node);
+            root_ = node;
         }
         ++size_;
         updateHeightAbove(node);
         return node;
     }
 
-    static BinaryNode<T>* removeAt(BinaryNode<T>* node, BinaryNode<T>*& hot) {
-        //native,easy for understanding solution1
-        if (node->left_child() == nullptr) {
+    static BinaryNode<T>* removeAt(BinaryNode<T>*& node, BinaryNode<T>*& hot) {
+        // native,easy for understanding solution1
+        if (node->left_child() == nullptr && node->right_child() != nullptr) {
             BinaryNode<T>* right_child = node->right_child();
             node->set_data(right_child->data());
             node->set_left_child(right_child->left_child());
             node->set_right_child(right_child->right_child());
             delete right_child;
-        } else if (node->right_child() == nullptr) {
+        } else if (node->right_child() == nullptr && node->left_child() != nullptr) {
             BinaryNode<T>* left_child = node->left_child();
             node->set_data(left_child->data());
             node->set_left_child(left_child->left_child());
             node->set_right_child(left_child->right_child());
             delete left_child;
-        } else {
+        } else if (node->right_child() != nullptr && node->left_child() != nullptr) {
             T node_data = node->data();
             BinaryNode<T>* successive_node = node->successive();
             assert(successive_node != nullptr);
             node->set_data(successive_node->data());
-            successive_node->set_data(data);
-            //successive node must not exist left child
-            //use successive node's right child node to replace successive node
+            successive_node->set_data(node_data);
+            // successive node must not exist left child
+            // use successive node's right child node to replace successive node
             BinaryNode<T>* right_child = successive_node->right_child();
             hot = successive_node->parent();
             if (right_child != nullptr) {
@@ -74,13 +78,22 @@ class BinarySearchTree : public BinaryTree<T> {
                 successive_node->set_data(right_child->data());
                 delete right_child;
             }
+        } else {
+            if (hot != nullptr) {
+                if (hot->left_child() == node) {
+                    hot->set_left_child(nullptr);
+                } else {
+                    hot->set_right_child(nullptr);
+                }
+            }
+            delete node;
+            node = nullptr;
         }
-
         return nullptr;
     }
 
     virtual bool remove(const T& e) {
-        BinaryNode<T> * node = search(e);
+        BinaryNode<T>* node = search(e);
         if (node == nullptr) {
             return false;
         }
