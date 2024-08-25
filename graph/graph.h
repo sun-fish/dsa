@@ -271,7 +271,9 @@ void Graph<Tvertex, Tedge>::PFS(size_t v, PU prioUpdater) {
     }
 }
 
+//likely chuan xiao zu zhi, each time, the shortest priority node will be added to path and become new vertex source
 // vs source vertex
+// if a node has no direct path to source vertex, the priority is set to finite at first
 template <typename Tvertex, typename Tedge>
 void Graph<Tvertex, Tedge>::dijkstra(size_t vs) {
     reset();
@@ -283,6 +285,7 @@ void Graph<Tvertex, Tedge>::dijkstra(size_t vs) {
             setEdgeType(parent(vs), vs, EdgeType::TREE);
         }
 
+        //update neighbor priority
         for (size_t j = firstNeighbor(vs); vertex_number_ != j; j = nextNeighbor(vs, j)) {
             if ((vertexStatus(j) == VertexStatus::UNDISCOVERED) && (priority(j) > priority(vs) + edgeWeight(vs, j))) {
                 setPriority(j, priority(vs) + edgeWeight(vs, j));
@@ -290,6 +293,7 @@ void Graph<Tvertex, Tedge>::dijkstra(size_t vs) {
             }
         }
 
+        // each iterative find the shortest priority node to be new source vertex
         int shortest = INT_MAX;
         for (size_t j = 0; j < vertex_number_; j++) {
             if ((vertexStatus(j) == VertexStatus::UNDISCOVERED) && (shortest > priority(j))) {
