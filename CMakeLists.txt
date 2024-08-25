@@ -13,11 +13,18 @@ if (MSVC)
     set(CMAKE_CXX_DISABLE_WARNINGS 4819)
 endif()
 
+include_directories(${PROJECT_SOURCE_DIR})
+
 add_subdirectory(public)
 add_subdirectory(array)
 add_subdirectory(list)
+add_subdirectory(queue)
+add_subdirectory(stack)
 add_subdirectory(binary_tree)
 add_subdirectory(graph)
 add_subdirectory(binary_search_tree)
+add_subdirectory(dictionary)
+add_subdirectory(string)
+add_subdirectory(sort)
 
 set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type")
