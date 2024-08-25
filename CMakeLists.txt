@@ -13,6 +13,7 @@ if (MSVC)
     set(CMAKE_CXX_DISABLE_WARNINGS 4819)
 endif()
 
+add_subdirectory(public)
 add_subdirectory(array)
 add_subdirectory(list)
 add_subdirectory(binary_tree)
