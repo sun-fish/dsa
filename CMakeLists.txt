@@ -17,5 +17,6 @@ add_subdirectory(array)
 add_subdirectory(list)
 add_subdirectory(binary_tree)
 add_subdirectory(graph)
+add_subdirectory(binary_search_tree)
 
 set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type")
