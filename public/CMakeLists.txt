@@ -4,6 +4,7 @@ project(Public)
 
 set(SRC
     entry.h
+    dictionary.h
     main.cpp
 )
 

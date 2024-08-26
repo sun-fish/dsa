@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(Dictionary)
+project(HashTable)
 
 set (SRC
-    dictionary.h
+    hash_table.h
     utility.h
     compile_test.cpp
     main.cpp
