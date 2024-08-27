@@ -3,13 +3,10 @@
 
 #include <assert.h>
 
-#include "quad_list_node.h"
+#include "skip_list.h"
 
-template <typename T>
+template <typename Key, typename Value>
 class QuadListUtility {
-    //
-    // template <typename VST>
-    // void traverse(VST&);
 };
 
 #endif  // !SKIP_LIST_UTILITY

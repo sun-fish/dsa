@@ -69,6 +69,7 @@ class QuadList {
         QuadListNode<T>* succ_node = nullptr;
         succ_node = pred_node->succ_;
         pred_node->succ_ = new_node;
+        new_node->pred_ = pred_node;
         if (succ_node != nullptr) {
             succ_node->pred_ = new_node;
         }
