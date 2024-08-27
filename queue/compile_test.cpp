@@ -1,7 +1,8 @@
 #include <assert.h>
 
-#include "utility.h"
+#include "queue.h"
 
 bool queue_test() {
+    Queue<int> queue;
     return true;
 }

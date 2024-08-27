@@ -17,6 +17,10 @@ int main(int argc, char** argv) {
     stack.push(1);
     std::cout << "stack top is " << stack.top() << std::endl;
 
+    if (!stack.empty()) {
+        std::cout << "stack is not empty!" << std::endl;
+    }
+
     stack.pop();
     std::cout << "stack top is " << stack.top() << std::endl;
     stack.pop();
