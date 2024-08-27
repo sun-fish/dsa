@@ -47,7 +47,7 @@ class Array {
         elements_ = new T[capacity_ = capcity];
         assert(capacity_ > size);
         for (size_ = 0; size_ < size;) {
-            elements_[size_++] = value
+            elements_[size_++] = value;
         }
     }
 
