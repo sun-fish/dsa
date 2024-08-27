@@ -25,6 +25,7 @@ add_subdirectory(graph)
 add_subdirectory(binary_search_tree)
 add_subdirectory(skip_list)
 add_subdirectory(hash_table)
+add_subdirectory(priority_queue)
 add_subdirectory(string)
 add_subdirectory(sort)
 
