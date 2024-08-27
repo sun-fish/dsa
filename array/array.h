@@ -38,11 +38,19 @@ class Array {
 
    public:
     Array(size_t capcity = 10, size_t size = 0, T value = 0) {
+        if (capacity_ < size) {
+            capacity_ = 0;
+            size_ = 0;
+            return;
+        }
+
         elements_ = new T[capacity_ = capcity];
         assert(capacity_ > size);
-        for (size_ = 0; size_ < size; elements_[size_++] = value)
-            ;
+        for (size_ = 0; size_ < size;) {
+            elements_[size_++] = value
+        }
     }
+
     Array(T const* array, size_t size) { copyFrom(array, 0, size); }
     Array(T const* array, size_t low, size_t high) { copyFrom(array, low, high); }
     Array(Array<T> const& array) { copyFrom(array.elements_, 0, array.size_); }
