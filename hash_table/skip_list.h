@@ -15,7 +15,7 @@ class Skiplist : public Dictionary<Key, Value> {
     Skiplist() {
         QuadList<Entry<Key, Value>> *temp = new QuadList<Entry<Key, Value>>;
         list_.insertAsFirst(temp);
-    }
+    }  // at least have one empty list node
 
     size_t size() { return list_.empty() ? 0 : list_.back()->data_->size_; }
 
@@ -44,12 +44,19 @@ class Skiplist : public Dictionary<Key, Value> {
         ListNode<QuadList<Entry<Key, Value>>*>* list_node = list_.back();
         QuadListNode<Entry<Key, Value>>* new_node1 = list_node->data_->insert(e, node);
 
+        //pao ying bi
+        //rand() & 1 = rand() % 2
         while (rand() & 1) {
-            while (node->pred_ && !node->above_) {
+            //find the nearest pred_ node which above node is not nullptr
+            while (node->pred_ != nullptr && node->above_ == nullptr) {
                 node = node->pred_;
             }
 
-            if (!node->pred_ && !node->above_) {
+            //one of the following condition should be satisfied 
+            //node->pred_ == nullptr or node->above_ != nullptr
+
+            //left top node, create a new list node
+            if (node->pred_ == nullptr && node->above_ == nullptr) {
                 QuadList<Entry<Key, Value>>* temp = new QuadList<Entry<Key, Value>>;
                 list_.insertAsFirst(temp);
                 list_.front()->data_->header_->below_ = list_node->data_->header_;
@@ -58,10 +65,11 @@ class Skiplist : public Dictionary<Key, Value> {
 
             node = node->above_;
             list_node = list_node->pred_;
+            //add a new new_node1 after node and above old new_node1 
             new_node1 = list_node->data_->insert(e, node, new_node1);
         }
 
-        return true;
+        return true; //dictionary allow duplicated entry
     }
 
     bool remove(Key k) {
@@ -71,16 +79,22 @@ class Skiplist : public Dictionary<Key, Value> {
         }
         ListNode<QuadList<Entry<Key, Value>>*>* list_node = list_.back();
 
-        while (node->above_) {
+        //climb to the highest node
+        while (node->above_ != nullptr) {
             list_node = list_node->pred_;
             node = node->above_;
         }
+
+        //from the highest node, down to the lowest, do delete
         do {
             QuadListNode<Entry<Key, Value>>* lower = node->below_;
             list_node->data_->remove(node);
             node = lower;
             list_node = list_node->succ_;
-        } while (list_node->succ_);
+        } while (list_node->succ_ != nullptr);
+
+        //remove the list node if the node data size is 0
+        //at least have one empty list node
         while ((1 < height()) && (list_.front()->data_->size_ < 1)) {
             list_.remove(list_.front());
             list_.front()->data_->header_->above_ = nullptr;
