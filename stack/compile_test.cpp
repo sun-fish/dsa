@@ -1,7 +1,8 @@
 #include <assert.h>
 
-#include "utility.h"
+#include "stack.h"
 
 bool stack_test() {
+    Stack<int> test;
     return true;
 }
