@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "priority_queue.h"
+#include <vector>
 
 int main(int argc, char** argv) {
     int a[5] = {4, 2, 5, 1, 3};

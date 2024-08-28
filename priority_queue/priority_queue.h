@@ -59,8 +59,7 @@ class PriorityQueueBinaryTree : public PriorityQueue<T>, public BinaryTree<T> {
 
     virtual T getMax() override {
         if (root_ == nullptr) {
-            T res;
-            return res;
+            return T();
         }
         return root_->data();
     }
