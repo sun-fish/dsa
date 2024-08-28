@@ -87,7 +87,7 @@ class HashtableChain : public Dictionary<Key, Value> {
 
     Value* get(Key k) override {
         size_t index = hashFunction(k);
-        auto list = buckets_[index];
+        auto &list = buckets_[index];
         for (auto& node : list) {
             if (node->key == k)
                 return &(node->value);
@@ -99,12 +99,13 @@ class HashtableChain : public Dictionary<Key, Value> {
 
     bool remove(Key k) override {
         size_t index = hashFunction(k);
-        auto list = buckets_[index];
+        auto& list = buckets_[index];
         auto it = list.begin();
         while (it != list.end()) {
             if ((*it)->key == k) {
                 break;
             }
+            ++it;
         }
         if (it == list.end()) {
             return false;
@@ -120,9 +121,10 @@ class HashtableChain : public Dictionary<Key, Value> {
         for (auto& list : buckets_) {
             for (auto& node : list) {
                 size_t hash = hashFunction(node->key);
-                std::cout << "hash: " << hash << "  key: " << node->key << "  value: " << node->value;
+                std::cout << "hash: " << hash << "  key: " << node->key << "  value: " << node->value << "  ";
             }
-            std::cout << std::endl;
+            if (!list.empty())
+                std::cout << std::endl;
         }
         std::cout << "Hash Table Traverse Finished!" << std::endl;
     }
