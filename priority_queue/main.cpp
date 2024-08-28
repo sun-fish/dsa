@@ -12,6 +12,15 @@ int main(int argc, char** argv) {
         priority_queue_array.delMax();
     }
     std::cout << std::endl << "priority queue array traverse finished!" << std::endl;
+    PriorityQueueBinaryTree<int> priority_queue_binary_tree(a, 5);
+    priority_queue_binary_tree.insert(6);
+    priority_queue_binary_tree.insert(10);
+    while (!priority_queue_binary_tree.empty()) {
+        std::cout << priority_queue_binary_tree.getMax() << "    ";
+        priority_queue_binary_tree.delMax();
+    }
+    std::cout << std::endl << "priority queue array traverse finished!" << std::endl;
+
     std::cout << "Press Enter to continue...";
     std::cin.get();
     return 0;

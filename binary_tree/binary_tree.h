@@ -19,7 +19,7 @@ class BinaryTree {
     BinaryNode<T>* root() { return root_; }
     void set_root(BinaryNode<T>* root) { root_ = root; }
 
-    bool empty() { return root_ != nullptr; }
+    bool empty() { return root_ == nullptr; }
 
     size_t deleteChildTreeNodes(BinaryNode<T>* node) {
         if (node == nullptr) return 0;
