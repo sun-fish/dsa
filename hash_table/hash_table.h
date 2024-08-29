@@ -12,7 +12,7 @@ template <typename Key, typename Value>
 class HashtableChain : public Dictionary<Key, Value> {
    protected:
     size_t hashFunction(const Key& k) { return k % prime_vector_[prime_index_]; }
-    void rehash() { 
+    void rehash() {
         std::vector<std::list<Entry<Key, Value>*>> buckets_copy;
         buckets_copy.swap(buckets_);
         capacity_number_ = prime_vector_[prime_index_];
@@ -30,21 +30,22 @@ class HashtableChain : public Dictionary<Key, Value> {
    public:
     // 11 is the 5th prime, 997 is the 168th prime
     HashtableChain() : prime_index_(4), entry_number_(0), load_threshold_(0.6) {
-        // create prime table
-        bool prime[1001];
+        bool isPrime[1001];
         for (size_t i = 0; i < 1001; ++i) {
-            prime[i] = true;
+            isPrime[i] = true;
         }
         // zero and one are not prime
-        prime[0] = false;
-        prime[1] = false;
+        isPrime[0] = false;
+        isPrime[1] = false;
         for (size_t i = 2; i < std::sqrt(1001) + 1; ++i) {
-            for (int j = 2 * i; j < 1001; j += i) {
-                prime[j] = false;
+            if (isPrime[i] == true) {
+                for (int j = 2 * i; j < 1001; j += i) {
+                    isPrime[j] = false;
+                }
             }
         }
         for (size_t i = 0; i < 1001; ++i) {
-            if (prime[i] == true) prime_vector_.push_back(i);
+            if (isPrime[i] == true) prime_vector_.push_back(i);
         }
 
         capacity_number_ = prime_vector_[prime_index_];
@@ -68,7 +69,7 @@ class HashtableChain : public Dictionary<Key, Value> {
 
     bool put(Key k, Value v) override {
         size_t index = hashFunction(k);
-        auto &list = buckets_[index];
+        auto& list = buckets_[index];
         for (auto& node : list) {
             if (node->key == k)
                 return false;
@@ -77,8 +78,7 @@ class HashtableChain : public Dictionary<Key, Value> {
         }
         list.push_back(new Entry<Key, Value>(k, v));
         ++entry_number_;
-        if (static_cast<double>(entry_number_) / static_cast<double>(capacity_number_) > load_threshold_ &&
-            prime_index_ < 168) {
+        if (load_threshold_ < loadFactor() && prime_index_ < 168) {
             ++prime_index_;
             rehash();
         }
@@ -87,7 +87,7 @@ class HashtableChain : public Dictionary<Key, Value> {
 
     Value* get(Key k) override {
         size_t index = hashFunction(k);
-        auto &list = buckets_[index];
+        auto& list = buckets_[index];
         for (auto& node : list) {
             if (node->key == k)
                 return &(node->value);
@@ -117,14 +117,15 @@ class HashtableChain : public Dictionary<Key, Value> {
         }
     }
 
+    double loadFactor() { return static_cast<double>(entry_number_) / static_cast<double>(capacity_number_); }
+
     void traverse() {
         for (auto& list : buckets_) {
             for (auto& node : list) {
                 size_t hash = hashFunction(node->key);
                 std::cout << "hash: " << hash << "  key: " << node->key << "  value: " << node->value << "  ";
             }
-            if (!list.empty())
-                std::cout << std::endl;
+            if (!list.empty()) std::cout << std::endl;
         }
         std::cout << "Hash Table Traverse Finished!" << std::endl;
     }
@@ -138,9 +139,148 @@ class HashtableChain : public Dictionary<Key, Value> {
     std::vector<size_t> prime_vector_;
 };
 
-// implementation
-
 template <typename Key, typename Value>
-class HashtableOpenAddress : public Dictionary<Key, Value> {};
+class HashtableOpenAddress : public Dictionary<Key, Value> {
+   protected:
+    size_t hashFunction(const Key& k) { return k % prime_vector_[prime_index_]; }
+
+    void rehash() {
+        entry_number_ = 0;
+        capacity_number_ = prime_vector_[prime_index_];
+        std::vector<Entry<Key, Value>*> buckets_copy(capacity_number_, nullptr);
+        std::vector<bool> is_entry_deleted_copy(capacity_number_, false);
+        buckets_copy.swap(buckets_);
+        is_entry_deleted_copy.swap(is_entry_deleted_);
+        for (auto& entry : buckets_copy) {
+            if (entry != nullptr) {
+                put(entry->key, entry->value);
+                delete entry;
+            }
+        }
+    }
+
+    // linear probing (hash(key) + i) mod (bucket size)
+    // find the first usable memory
+    size_t linearProbingForFree(const Key& k) {
+        size_t result = hashFunction(k);
+        size_t i = 1;
+        // load factor must less than 0.6, so this loop is not dead loop
+        while (buckets_[result] != nullptr) {
+            result = (result + i) % capacity_number_;
+            ++i;
+        }
+        return result;
+    }
+
+    // search until meet the matched key
+    size_t linearProbingForHit(const Key& k) {
+        size_t result = hashFunction(k);
+        size_t i = 1;
+        while (buckets_[result] != nullptr || is_entry_deleted_[result] == true) {
+            if (buckets_[result] != nullptr && k == buckets_[result]->key) {
+                break;
+            }
+
+            result = (result + i) % capacity_number_;
+            ++i;
+        }
+        return result;
+    }
+
+   public:
+    // 11 is the 5th prime, 997 is the 168th prime
+    HashtableOpenAddress() : prime_index_(4), entry_number_(0), load_threshold_(0.6) {
+        // create prime table
+        bool isPrime[1001];
+        for (size_t i = 0; i < 1001; ++i) {
+            isPrime[i] = true;
+        }
+        // zero and one are not prime
+        isPrime[0] = false;
+        isPrime[1] = false;
+        for (size_t i = 2; i < std::sqrt(1001) + 1; ++i) {
+            if (isPrime[i] == true) {
+                for (int j = 2 * i; j < 1001; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+        for (size_t i = 0; i < 1001; ++i) {
+            if (isPrime[i] == true) prime_vector_.push_back(i);
+        }
+
+        capacity_number_ = prime_vector_[prime_index_];
+        rehash();  // init buckets
+    }
+
+    ~HashtableOpenAddress() {
+        for (size_t i = 0; i < capacity_number_; ++i) {
+            if (buckets_[i] != nullptr && is_entry_deleted_[i] == false) {
+                delete buckets_[i];
+            }
+        }
+    }
+
+    size_t size() override { return entry_number_; }
+
+    bool put(Key k, Value v) override {
+        size_t probing_result = linearProbingForHit(k);
+        if (buckets_[probing_result] != nullptr) {
+            return false;
+        } else {
+            probing_result = linearProbingForFree(k);
+            buckets_[probing_result] = new Entry<Key, Value>(k, v);
+            is_entry_deleted_[probing_result] = false;
+            ++entry_number_;
+            if (load_threshold_ < loadFactor() && prime_index_ < 168) {
+                ++prime_index_;
+                rehash();
+            }
+            return true;
+        }
+    }
+
+    Value* get(Key k) override {
+        size_t probing_result = linearProbingForHit(k);
+        if (buckets_[probing_result] == nullptr)
+            return nullptr;
+        else
+            return &(buckets_[probing_result]->value);
+    }
+
+    bool remove(Key k) override {
+        size_t probing_result = linearProbingForHit(k);
+        if (buckets_[probing_result] == nullptr) {
+            return false;
+        } else {
+            delete buckets_[probing_result];
+            buckets_[probing_result] = nullptr;
+            is_entry_deleted_[probing_result] = true;
+            --entry_number_;
+            return true;
+        }
+    }
+
+    double loadFactor() { return static_cast<double>(entry_number_) / static_cast<double>(capacity_number_); }
+
+    void traverse() {
+        for (auto& entry : buckets_) {
+            if (entry != nullptr) {
+                size_t hash = linearProbingForHit(entry->key);
+                std::cout << "hash:" << hash << "  key:" << entry->key << "  value:" << entry->value << std::endl;
+            }
+        }
+        std::cout << "Hash Table Traverse Finished!" << std::endl;
+    }
+
+   private:
+    std::vector<Entry<Key, Value>*> buckets_;
+    std::vector<bool> is_entry_deleted_;
+    double load_threshold_;
+    size_t capacity_number_;
+    size_t entry_number_;
+    size_t prime_index_;
+    std::vector<size_t> prime_vector_;
+};
 
 #endif
