@@ -72,7 +72,7 @@ class String {
     }
 
     bool operator==(String<T> &string) {
-        if (size_ != string.size_()) return false;
+        if (size_ != string.size()) return false;
         bool result = true;
         for (size_t i = 0; i < size_; ++i) {
             if (string_[i] != string[i]) {

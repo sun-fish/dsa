@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
     String<wchar_t> string4(s, sizeof(s) / sizeof(wchar_t) - 1);
     string4.print();
 
+    assert(string3 == string4);
     std::cout << "Press Enter to continue...";
     std::cin.get();
     return 0;
