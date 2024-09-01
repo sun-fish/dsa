@@ -96,6 +96,7 @@ class String {
         string.size_ = length;
         string.string_ = static_cast<T*>(malloc(length * sizeof(T)));
         memcpy(string.string_, string_ + start, length * sizeof(T));
+        return true;
     }
     bool prefix(String<T> &string, size_t length) { return subString(string, 0, length); }
     bool suffix(String<T> &string, size_t length) {
