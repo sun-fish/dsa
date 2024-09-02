@@ -66,6 +66,14 @@ int main(int argc, char** argv) {
     }
     std::cout << std::endl;
 
+    std::vector<size_t> quick_sort_input = {9, 8, 7, 1, 2, 3, 5, 4, 10, 6};
+    Sort<>::quickSort(quick_sort_input, 0, 9);
+    std::cout << "quick sort:";
+    for (auto& key : quick_sort_input) {
+        std::cout << key << ",";
+    }
+    std::cout << std::endl;
+
     std::cout << "Press Enter to continue...";
     std::cin.get();
     return 0;

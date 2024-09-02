@@ -137,27 +137,79 @@ class Sort {
         return;
     }
 
-    // static void listMerge(size_t low, size_t mid, size_t high) {}
+    // left close, right close
+    // select the low index value to be compared value,
+    // if want to use other compare value, fisrt swap the value to low index position
+    // [below compare value][undefied low high][above compare value]
+    // low index positon can be write ---> high index positon can be write ---> low index positon can be write
+    // each itaration, keep low index positon can be write, and decrease the undefined [low, high] length
+    static size_t partition1(std::vector<Key>& input, size_t low, size_t high) {
+        Key compare_value = input[low];
+        while (low < high) {
+            // low index positon can be write
+            while (low < high) {
+                if (compare_value < input[high]) {
+                    --high;
+                } else {
+                    // high index position can be wirte
+                    input[low] = input[high];
+                    ++low;
+                    break;
+                }
+            }
 
-    // static std::vector<Key> listMergeSort(std::vector<Key> input) {
-    //     std::vector<key> output;
-    //     return output;
-    // }
+            // high index positon can be write
+            while (low < high) {
+                if (input[low] < compare_value) {
+                    ++low;
+                } else {
+                    // low index position can be write
+                    input[high] = input[low];
+                    --high;
+                    break;
+                }
+            }
+        }
+        input[low] = compare_value;
+        return low;
+    }
 
-    // static std::vector<Key> partition(std::vector<Key> input) {
-    //     std::vector<key> output;
-    //     return output;
-    // }
+    // left close, right close
+    // [below compare value low mid] [above compare value ][undefied low high, k high]
+    // image input[low] is minimum
+    static size_t partition2(std::vector<Key>& input, size_t low, size_t high) {
+        Key compare_value = input[low];
+        //input[low] = min(input) - 1;
+        int below_compare_value_index_end = low;
+        for (int i = low + 1; i <= high; ++i) {
+            if (input[i] < compare_value) {
+                ++below_compare_value_index_end;
+                std::swap(input[i], input[below_compare_value_index_end]);
+            }
+        }
+        input[below_compare_value_index_end] = compare_value;
+        return below_compare_value_index_end;
+    }
 
-    static std::vector<Key> quickSort(std::vector<Key> input) {
-        std::vector<key> output;
-        return output;
+    // left close, right close
+    static void quickSort(std::vector<Key>& input, size_t low, size_t high) {
+        if (low >= high) return;
+        int pivot = partition1(input, low, high);
+        quickSort(input, low, pivot);
+        quickSort(input, pivot + 1, high);
     }
 
     static std::vector<Key> shellSort(std::vector<Key> input) {
         std::vector<key> output;
         return output;
     }
+
+    // static void listMerge(size_t low, size_t mid, size_t high) {}
+
+    // static std::vector<Key> listMergeSort(std::vector<Key> input) {
+    //     std::vector<key> output;
+    //     return output;
+    // }
 };
 
 #endif
