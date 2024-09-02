@@ -33,6 +33,16 @@ int main(int argc, char** argv) {
     for (auto& key : heap_sort_output) {
         std::cout << "key: " << key << std::endl;
     }
+
+    std::vector<size_t> bubble_sort_input = {9, 8, 7, 1, 2, 3, 5, 4, 10, 6};
+    auto bubble_sort_output = Sort<>::bubbleSort(bubble_sort_input);
+    for (auto& key : bubble_sort_output) {
+        std::cout << key << ",";
+    }
+    std::cout << std::endl;
+
+
+
     std::cout << "Press Enter to continue...";
     std::cin.get();
     return 0;

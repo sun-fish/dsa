@@ -56,14 +56,15 @@ class Sort {
         return std::vector<Key>(heap_sort_input, heap_sort_input + size);
     }
 
-    static std::vector<Key> bubble(std::vector<Key> input) {
-        std::vector<key> output;
-        return output;
-    }
-
     static std::vector<Key> bubbleSort(std::vector<Key> input) {
-        std::vector<key> output;
-        return output;
+        for (int i = input.size(); i != 0; --i) {
+            for (int j = 1; j < i; ++j) {
+                if (input[j -1] > input[j]) {
+                    std::swap(input[j], input[j - 1]);
+                }
+            }
+        }
+        return input;
     }
 
     static std::vector<Key> selectionSort(std::vector<Key> input) {
