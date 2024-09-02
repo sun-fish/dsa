@@ -36,12 +36,35 @@ int main(int argc, char** argv) {
 
     std::vector<size_t> bubble_sort_input = {9, 8, 7, 1, 2, 3, 5, 4, 10, 6};
     auto bubble_sort_output = Sort<>::bubbleSort(bubble_sort_input);
+    std::cout << "bubble sort:";
     for (auto& key : bubble_sort_output) {
         std::cout << key << ",";
     }
     std::cout << std::endl;
 
+    std::vector<size_t> selection_sort_input = {9, 8, 7, 1, 2, 3, 5, 4, 10, 6};
+    auto selection_sort_output = Sort<>::selectionSort(selection_sort_input);
+    std::cout << "selection sort:";
+    for (auto& key : selection_sort_output) {
+        std::cout << key << ",";
+    }
+    std::cout << std::endl;
 
+    std::vector<size_t> insertion_sort_input = {9, 8, 7, 1, 2, 3, 5, 4, 10, 6};
+    auto insertion_sort_output = Sort<>::insertionSort(insertion_sort_input);
+    std::cout << "insertion sort:";
+    for (auto& key : insertion_sort_output) {
+        std::cout << key << ",";
+    }
+    std::cout << std::endl;
+
+    std::vector<size_t> vector_merge_sort_input = {9, 8, 7, 1, 2, 3, 5, 4, 10, 6};
+    Sort<>::vectorMergeSort(vector_merge_sort_input, 0, 10);
+    std::cout << "vector merge sort:";
+    for (auto& key : vector_merge_sort_input) {
+        std::cout << key << ",";
+    }
+    std::cout << std::endl;
 
     std::cout << "Press Enter to continue...";
     std::cin.get();

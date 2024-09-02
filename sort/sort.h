@@ -59,7 +59,7 @@ class Sort {
     static std::vector<Key> bubbleSort(std::vector<Key> input) {
         for (int i = input.size(); i != 0; --i) {
             for (int j = 1; j < i; ++j) {
-                if (input[j -1] > input[j]) {
+                if (input[j - 1] > input[j]) {
                     std::swap(input[j], input[j - 1]);
                 }
             }
@@ -68,19 +68,73 @@ class Sort {
     }
 
     static std::vector<Key> selectionSort(std::vector<Key> input) {
-        std::vector<key> output;
-        return output;
+        for (size_t i = 0; i < input.size(); ++i) {
+            size_t minimun_element_index = i;
+            for (size_t j = i + 1; j < input.size(); ++j) {
+                if (input[j] < input[minimun_element_index]) {
+                    minimun_element_index = j;
+                }
+            }
+            std::swap(input[i], input[minimun_element_index]);
+        }
+        return input;
     }
 
-    static void vectorMerge(size_t low, size_t mid, size_t high) {
-        int res = low;
-        int res1 = high;
+    static std::vector<Key> insertionSort(std::vector<Key> input) {
+        for (size_t i = 1; i < input.size(); ++i) {
+            Key element = input[i];
+            for (size_t j = i - 1; j != -1; --j) {
+                if (element < input[j]) {
+                    input[j + 1] = input[j];
+                } else {
+                    input[j + 1] = element;
+                    break;
+                }
+            }
+            if (element < input[0]) {
+                input[0] = element;
+            }
+        }
+
+        return input;
+    }
+
+    static void vectorMerge(std::vector<Key>& input, size_t low, size_t mid, size_t high) {
+        std::vector<Key> temp(high - low);
+        size_t current_low_index = low;
+        size_t current_high_index = mid;
+
+        for (size_t i = 0; i < high - low; ++i) {
+            if (current_low_index == mid) {
+                temp[i] = input[current_high_index++];
+                continue;
+            }
+            if (current_high_index == high) {
+                temp[i] = input[current_low_index++];
+                continue;
+            }
+            if (input[current_low_index] < input[current_high_index]) {
+                temp[i] = input[current_low_index++];
+            } else {
+                temp[i] = input[current_high_index++];
+            }
+        }
+
+        for (size_t i = 0; i < high - low; ++i) {
+            input[low + i] = temp[i];
+        }
         return;
     }
 
-    static std::vector<Key> vectorMergeSort(std::vector<Key> input) {
-        std::vector<key> output;
-        return output;
+    // left close, right open
+    static void vectorMergeSort(std::vector<Key>& input, size_t low, size_t high) {
+        assert(low <= high);
+        if (low + 1 == high) return;
+        size_t mid = (high - low) / 2 + low;
+        vectorMergeSort(input, low, mid);
+        vectorMergeSort(input, mid, high);
+        vectorMerge(input, low, mid, high);
+        return;
     }
 
     // static void listMerge(size_t low, size_t mid, size_t high) {}
