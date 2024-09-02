@@ -9,8 +9,8 @@ class Queue {
    public:
     void enqueue(T const& e) { list_.insertAsLast(e); }
 
-    T dequeue() {
-        if (!list_.empty()) return list_.remove(list_.front());
+    void dequeue() {
+        if (!list_.empty()) list_.remove(list_.front());
     }
 
     T& front() {
