@@ -4,6 +4,7 @@
 #include <functional>
 #include <vector>
 
+#include "list/list.h"
 #include "priority_queue/utility.h"
 #include "public/entry.h"
 
@@ -179,7 +180,7 @@ class Sort {
     // image input[low] is minimum
     static size_t partition2(std::vector<Key>& input, size_t low, size_t high) {
         Key compare_value = input[low];
-        //input[low] = min(input) - 1;
+        // input[low] = min(input) - 1;
         int below_compare_value_index_end = low;
         for (int i = low + 1; i <= high; ++i) {
             if (input[i] < compare_value) {
@@ -199,17 +200,106 @@ class Sort {
         quickSort(input, pivot + 1, high);
     }
 
-    static std::vector<Key> shellSort(std::vector<Key> input) {
-        std::vector<key> output;
-        return output;
+    // merge sorted list1 and sorted list2
+    static void sortedListMerge(List<Key>* list1, List<Key>* list2) {
+        if (list1 == nullptr || list2 == nullptr) return;
+        ListNode<Key>* current_list1_node = list1->front();
+        ListNode<Key>* current_list2_node = list2->front();
+
+        while (current_list1_node->succ_ != nullptr && current_list2_node->succ_ != nullptr) {
+            if (current_list1_node->data_ > current_list2_node->data_) {
+                // remove current_list2_node from list2
+                auto current_list2_node_pred = current_list2_node->pred_;
+                auto current_list2_node_succ = current_list2_node->succ_;
+                current_list2_node_pred->succ_ = current_list2_node_succ;
+                current_list2_node_succ->pred_ = current_list2_node_pred;
+                // insert current_list2_node before current_list1_node
+                auto current_list1_node_pred = current_list1_node->pred_;
+                current_list1_node_pred->succ_ = current_list2_node;
+                current_list2_node->pred_ = current_list1_node_pred;
+                current_list1_node->pred_ = current_list2_node;
+                current_list2_node->succ_ = current_list1_node;
+
+                current_list2_node = current_list2_node_succ;
+            } else {
+                current_list1_node = current_list1_node->succ_;
+            }
+        }
+
+        while (current_list2_node->succ_ != nullptr) {
+            // remove current_list2_node from list2
+            auto current_list2_node_pred = current_list2_node->pred_;
+            auto current_list2_node_succ = current_list2_node->succ_;
+            current_list2_node_pred->succ_ = current_list2_node_succ;
+            current_list2_node_succ->pred_ = current_list2_node_pred;
+            // insert current_list2_node after current_list1_node
+            auto current_list1_node_pred = current_list1_node->pred_;
+            current_list1_node_pred->succ_ = current_list2_node;
+            current_list2_node->pred_ = current_list1_node_pred;
+            current_list2_node->succ_ = current_list1_node;
+            current_list1_node->pred_ = current_list2_node;
+            current_list2_node = current_list2_node_succ;
+        }
     }
 
-    // static void listMerge(size_t low, size_t mid, size_t high) {}
+    // only use succ
+    // merge algorithm case:
+    // list1 4---->9---->10---->11
+    // list2 2---->3---->7---->8----->12
+    static ListNode<Key>* sortedListMerge(ListNode<Key>* head_node, ListNode<Key>* head_node1) {
+        if (head_node == nullptr) return head_node1;
+        if (head_node1 == nullptr) return head_node;
 
-    // static std::vector<Key> listMergeSort(std::vector<Key> input) {
-    //     std::vector<key> output;
-    //     return output;
-    // }
+        ListNode<Key>* current_list1_node = head_node;
+        ListNode<Key>* current_list2_node = head_node1;
+        ListNode<Key>* pred_list1_node = nullptr;
+        ListNode<Key>* new_head = head_node;
+        while (current_list1_node != nullptr && current_list2_node != nullptr) {
+            if (current_list1_node->data_ > current_list2_node->data_) {
+                auto current_list2_node_succ = current_list2_node->succ_;
+                current_list2_node->succ_ = current_list1_node;
+                if (pred_list1_node == nullptr) {
+                    new_head = current_list2_node;
+                    pred_list1_node = current_list2_node;
+                    
+                } else {
+                    pred_list1_node->succ_ = current_list2_node;
+                    pred_list1_node = current_list2_node;
+                }
+                current_list2_node = current_list2_node_succ;
+            } else {
+                pred_list1_node = current_list1_node;
+                current_list1_node = current_list1_node->succ_;
+            }
+        }
+
+        if (current_list2_node != nullptr) {
+            assert(pred_list1_node != nullptr);
+            pred_list1_node->succ_ = current_list2_node;
+        }
+
+        return new_head;
+    }
+
+    static ListNode<Key>* listMergeSort(ListNode<Key>* head_node, size_t n) {
+        if (n < 2) {
+            if (head_node != nullptr) {
+                head_node->succ_ = nullptr;
+            }
+            return head_node;
+        }
+        size_t mid = n / 2;
+        ListNode<Key>* head_node1 = head_node;
+        ListNode<Key>* pre_node = nullptr;
+        for (int i = 0; i < mid; ++i) {
+            pre_node = head_node1;
+            head_node1 = head_node1->succ_;
+        }
+        pre_node->succ_ = nullptr;
+        auto head1 = listMergeSort(head_node, mid);
+        auto head2 = listMergeSort(head_node1, n - mid);
+        return sortedListMerge(head1, head2);
+    }
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -11,7 +10,7 @@ int main(int argc, char** argv) {
     hash_sort_input.push_back(Entry<size_t, std::string>(7, "zheng"));
     hash_sort_input.push_back(Entry<size_t, std::string>(4, "li"));
     hash_sort_input.push_back(Entry<size_t, std::string>(2, "qian"));
-    hash_sort_input.push_back(Entry<size_t, std::string>(1, "zhao" ));
+    hash_sort_input.push_back(Entry<size_t, std::string>(1, "zhao"));
     hash_sort_input.push_back(Entry<size_t, std::string>(1, "zhao_1"));
     hash_sort_input.push_back(Entry<size_t, std::string>(3, "sun"));
     hash_sort_input.push_back(Entry<size_t, std::string>(8, "wang_1"));
@@ -71,6 +70,89 @@ int main(int argc, char** argv) {
     std::cout << "quick sort:";
     for (auto& key : quick_sort_input) {
         std::cout << key << ",";
+    }
+    std::cout << std::endl;
+
+    List<size_t> list1;
+    list1.insertAsLast(2);
+    list1.insertAsLast(4);
+    list1.insertAsLast(6);
+    list1.insertAsLast(7);
+
+    List<size_t> list2;
+    list2.insertAsLast(1);
+    list2.insertAsLast(3);
+    list2.insertAsLast(5);
+    list2.insertAsLast(8);
+    list2.insertAsLast(9);
+    list2.insertAsLast(10);
+
+    Sort<>::sortedListMerge(&list1, &list2);
+    ListNode<size_t>* current_list1_node = list1.front();
+    std::cout << "merge two sorted list:";
+    while (current_list1_node->succ_ != nullptr) {
+        std::cout << current_list1_node->data_ << ",";
+        current_list1_node = current_list1_node->succ_;
+    }
+    std::cout << std::endl;
+
+
+    ListNode<size_t> l_node0(4);
+    ListNode<size_t> l_node1(9);
+    ListNode<size_t> l_node2(10);
+    ListNode<size_t> l_node3(12);
+    ListNode<size_t> l_node4(2);
+    ListNode<size_t> l_node5(3);
+    ListNode<size_t> l_node6(7);
+    ListNode<size_t> l_node7(8);
+    ListNode<size_t> l_node8(11);
+    ListNode<size_t> l_node9(13);
+
+    l_node0.succ_ = &l_node1;
+    l_node1.succ_ = &l_node2;
+    l_node2.succ_ = &l_node3;
+
+    l_node4.succ_ = &l_node5;
+    l_node5.succ_ = &l_node6;
+    l_node6.succ_ = &l_node7;
+    l_node7.succ_ = &l_node8;
+    l_node8.succ_ = &l_node9;
+
+    auto l_node = Sort<>::sortedListMerge(&l_node0, &l_node4);
+
+    std::cout << "merge two sorted list:";
+    while (l_node != nullptr) {
+        std::cout << l_node->data_ << ",";
+        l_node = l_node->succ_;
+    }
+    std::cout << std::endl;
+
+    ListNode<size_t> node0(9);
+    ListNode<size_t> node1(8);
+    ListNode<size_t> node2(7);
+    ListNode<size_t> node3(1);
+    ListNode<size_t> node4(2);
+    ListNode<size_t> node5(3);
+    ListNode<size_t> node6(5);
+    ListNode<size_t> node7(4);
+    ListNode<size_t> node8(10);
+    ListNode<size_t> node9(6);
+
+    node0.succ_ = &node1;
+    node1.succ_ = &node2;
+    node2.succ_ = &node3;
+    node3.succ_ = &node4;
+    node4.succ_ = &node5;
+    node5.succ_ = &node6;
+    node6.succ_ = &node7;
+    node7.succ_ = &node8;
+    node8.succ_ = &node9;
+
+    auto node = Sort<>::listMergeSort(&node0, 10);
+    std::cout << "list merge sort:";
+    while (node != nullptr) {
+        std::cout << node->data_ << ",";
+        node = node->succ_;
     }
     std::cout << std::endl;
 
