@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "utility.h"
 #include "string.h"
+#include "utility.h"
 
 int main(int argc, char** argv) {
     String<char> char_string;
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
     string2 = String<wchar_t>(L"Lu", 2);
     string2.print();
-    
+
     String<wchar_t> string3 = string1 + string2;
     string3.print();
 
@@ -36,8 +36,11 @@ int main(int argc, char** argv) {
     wchar_t s[7] = L"ChenLu";
     String<wchar_t> string4(s, sizeof(s) / sizeof(wchar_t) - 1);
     string4.print();
-
     assert(string3 == string4);
+
+    size_t result = StringUtility<char>::matchKMP("chen", "chenlu");
+    assert(result == 0);
+
     std::cout << "Press Enter to continue...";
     std::cin.get();
     return 0;

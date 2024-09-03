@@ -1,6 +1,7 @@
 #ifndef STRING_H
 #define STRING_H
 
+#include <assert.h>
 #include <malloc.h>
 #include <string.h>
 
