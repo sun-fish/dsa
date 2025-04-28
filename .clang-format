@@ -7,3 +7,7 @@ UseCRLF:         false
 UseTab:          Never
 # 代码最大列数
 ColumnLimit:     120
+# NamespaceIndentation: All
+# AccessModifierOffset: -2
+# BreakBeforeBraces: Allman
+# IncludeBlocks: Preserve
